@@ -1,0 +1,302 @@
+<title>Faustus Ledger</title>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Spectral:wght@400;500;600&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap">
+<style>
+  :root {
+    --bg: #15130f;
+    --surface: #1d1a15;
+    --surface-2: #242019;
+    --border: #35301f;
+    --border-soft: #2a2619;
+    --text: #ece5d6;
+    --text-muted: #a89d86;
+    --text-faint: #6f6753;
+    --accent: #c99a4a;
+    --accent-soft: #4a3f26;
+    --good: #6ea677;
+    --good-soft: #24301f;
+    --warn: #c9814a;
+    --warn-soft: #332417;
+    --neutral: #8a8270;
+    --neutral-soft: #26241c;
+    --mono: 'JetBrains Mono', ui-monospace, monospace;
+    --display: 'Spectral', Georgia, serif;
+    --body: 'Inter', system-ui, sans-serif;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #15130f; --surface: #1d1a15; --surface-2: #242019;
+      --border: #35301f; --border-soft: #2a2619;
+      --text: #ece5d6; --text-muted: #a89d86; --text-faint: #6f6753;
+      --accent: #c99a4a; --accent-soft: #4a3f26;
+      --good: #6ea677; --good-soft: #24301f;
+      --warn: #c9814a; --warn-soft: #332417;
+      --neutral: #8a8270; --neutral-soft: #26241c;
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #15130f; --surface: #1d1a15; --surface-2: #242019;
+    --border: #35301f; --border-soft: #2a2619;
+    --text: #ece5d6; --text-muted: #a89d86; --text-faint: #6f6753;
+    --accent: #c99a4a; --accent-soft: #4a3f26;
+    --good: #6ea677; --good-soft: #24301f;
+    --warn: #c9814a; --warn-soft: #332417;
+    --neutral: #8a8270; --neutral-soft: #26241c;
+  }
+  * { box-sizing: border-box; }
+  body {
+    background: var(--bg); color: var(--text); font-family: var(--body);
+    margin: 0; padding: 40px 20px;
+  }
+  .wrap {
+    max-width: 900px; margin: 0 auto;
+    display: flex; flex-direction: column; gap: 28px;
+  }
+  .masthead {
+    display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 12px 20px;
+    border-bottom: 1px solid var(--border); padding-bottom: 20px;
+  }
+  .masthead-left { display: flex; flex-direction: column; gap: 6px; }
+  .eyebrow {
+    font-family: var(--mono); font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--accent);
+    display: flex; align-items: center; gap: 8px;
+  }
+  .dot { width: 7px; height: 7px; border-radius: 50%; background: var(--good); display: inline-block; }
+  .dot.stale { background: var(--warn); }
+  .dot.dead { background: var(--text-faint); }
+  h1 { font-family: var(--display); font-weight: 600; font-size: clamp(24px, 4vw, 32px); margin: 0; text-wrap: balance; }
+  .refresh-btn {
+    font-family: var(--body); font-size: 13px; font-weight: 600; color: var(--bg);
+    background: var(--accent); border: none; border-radius: 8px; padding: 9px 16px;
+    cursor: pointer; white-space: nowrap; height: fit-content;
+  }
+  .refresh-btn:hover { filter: brightness(1.08); }
+  .refresh-btn:disabled { opacity: 0.6; cursor: default; }
+  .stat-row {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 1px; background: var(--border); border: 1px solid var(--border); border-radius: 10px; overflow: hidden;
+  }
+  .stat { background: var(--surface); padding: 16px 20px; display: flex; flex-direction: column; gap: 6px; }
+  .stat-label { font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-faint); }
+  .stat-value { font-family: var(--mono); font-variant-numeric: tabular-nums; font-size: 22px; font-weight: 500; }
+  .stat-value.accent { color: var(--accent); }
+  section { display: flex; flex-direction: column; gap: 14px; }
+  .section-head { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; }
+  h2 { font-family: var(--display); font-size: 19px; font-weight: 600; margin: 0; }
+  .section-note { font-size: 13px; color: var(--text-faint); font-family: var(--mono); }
+  .card {
+    border: 1px solid var(--border); border-radius: 10px; padding: 18px 20px; background: var(--surface);
+    display: flex; flex-direction: column; gap: 10px;
+  }
+  .card.good { background: var(--good-soft); border-color: var(--good); }
+  .card.warn { background: var(--warn-soft); border-color: var(--warn); }
+  .cycle-row { display: flex; flex-direction: column; gap: 12px; }
+  .cycle-top { display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+  .cycle-path { font-family: var(--body); font-weight: 500; font-size: 15px; }
+  .cycle-profit { font-family: var(--mono); font-size: 18px; font-weight: 600; color: var(--accent); }
+  .cycle-profit.hot { color: var(--warn); }
+  .streak-bar { display: flex; align-items: center; gap: 8px; }
+  .streak-pips { display: flex; gap: 4px; }
+  .pip { width: 18px; height: 6px; border-radius: 3px; background: var(--border-soft); }
+  .pip.filled { background: var(--accent); }
+  .streak-label { font-size: 12px; font-family: var(--mono); color: var(--text-muted); }
+  .flag-note {
+    font-size: 12px; color: var(--warn); font-family: var(--body); display: flex; gap: 6px; align-items: flex-start;
+  }
+  .empty-note { font-size: 14px; color: var(--text-muted); line-height: 1.6; }
+  table { width: 100%; border-collapse: collapse; font-size: 13px; }
+  .table-scroll { overflow-x: auto; border: 1px solid var(--border); border-radius: 10px; }
+  thead th {
+    text-align: left; font-size: 11px; letter-spacing: 0.05em; text-transform: uppercase; color: var(--text-faint);
+    font-weight: 600; padding: 9px 14px; background: var(--surface-2); border-bottom: 1px solid var(--border); white-space: nowrap;
+  }
+  tbody td { padding: 9px 14px; border-bottom: 1px solid var(--border-soft); white-space: nowrap; }
+  tbody tr:last-child td { border-bottom: none; }
+  tbody tr:nth-child(even) { background: var(--surface); }
+  td.num, th.num { text-align: right; font-family: var(--mono); font-variant-numeric: tabular-nums; }
+  footer {
+    border-top: 1px solid var(--border); padding-top: 16px; font-size: 12px; color: var(--text-faint);
+    line-height: 1.6; display: flex; flex-wrap: wrap; justify-content: space-between; gap: 10px;
+  }
+  footer a { color: var(--accent); }
+  .loading { display: flex; align-items: center; gap: 10px; color: var(--text-muted); font-size: 14px; padding: 30px 0; }
+  .spinner {
+    width: 16px; height: 16px; border-radius: 50%; border: 2px solid var(--border);
+    border-top-color: var(--accent); animation: spin 0.8s linear infinite;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  .error-card { border: 1px solid var(--warn); background: var(--warn-soft); border-radius: 10px; padding: 16px 20px; font-size: 14px; }
+</style>
+
+<div class="wrap">
+  <div class="masthead">
+    <div class="masthead-left">
+      <span class="eyebrow" id="live-indicator"><span class="dot" id="live-dot"></span>Live &middot; Forbidden Rites</span>
+      <h1>Faustus Arbitrage Ledger</h1>
+    </div>
+    <button class="refresh-btn" id="refresh-btn" onclick="loadData()">Refresh now</button>
+  </div>
+
+  <div id="content">
+    <div class="loading"><span class="spinner"></span>Loading live data&hellip;</div>
+  </div>
+
+  <footer>
+    <span>This product isn't affiliated with or endorsed by Grinding Gear Games in any way. Read-only view; every trade is executed manually in-game.</span>
+    <span><a href="https://github.com/Faizak9x/poe2-faustus-arb" target="_blank" rel="noopener">Repo</a> &middot; <a href="https://github.com/Faizak9x/poe2-faustus-arb/actions" target="_blank" rel="noopener">Actions log</a></span>
+  </footer>
+</div>
+
+<script>
+const HISTORY_URL = "state/history.json?t=" + Date.now();
+const ALERTS_URL = "state/alerts.log?t=" + Date.now();
+const PERSISTENCE_HOURS = 2;
+
+function humanize(rawId) {
+  let base = rawId.split("/").pop();
+  if (base.startsWith("Currency")) base = base.slice("Currency".length);
+  const spaced = base.replace(/(?<!^)(?=[A-Z])/g, " ").trim();
+  return spaced || rawId;
+}
+
+function formatCycle(nodes) {
+  const names = nodes.map(humanize);
+  names.push(names[0]);
+  return names.join(" -> ");
+}
+
+function escapeHtml(s) {
+  return String(s).replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+}
+
+function timeAgo(isoOrLabel) {
+  const d = new Date(isoOrLabel);
+  if (isNaN(d)) return isoOrLabel;
+  const mins = Math.round((Date.now() - d.getTime()) / 60000);
+  if (mins < 1) return "just now";
+  if (mins < 60) return mins + "m ago";
+  const hrs = Math.round(mins / 60);
+  if (hrs < 48) return hrs + "h ago";
+  return Math.round(hrs / 24) + "d ago";
+}
+
+async function loadData() {
+  const btn = document.getElementById("refresh-btn");
+  btn.disabled = true;
+  btn.textContent = "Refreshing...";
+  const content = document.getElementById("content");
+
+  try {
+    const histRes = await fetch(HISTORY_URL, { cache: "no-store" });
+    if (!histRes.ok) throw new Error("history.json not found yet (status " + histRes.status + ") - the hourly check may not have run yet.");
+    const hist = await histRes.json();
+
+    let alertLines = [];
+    try {
+      const alertsRes = await fetch(ALERTS_URL, { cache: "no-store" });
+      if (alertsRes.ok) {
+        const text = await alertsRes.text();
+        alertLines = text.split("\n").filter(l => l.trim()).map(l => { try { return JSON.parse(l); } catch { return null; } }).filter(Boolean).reverse();
+      }
+    } catch (e) { }
+
+    render(hist, alertLines);
+    updateLiveIndicator(hist);
+  } catch (err) {
+    content.innerHTML = `<div class="error-card">Couldn't load live data: ${escapeHtml(err.message)}<br><br>If this repo was just made public or the first hourly run hasn't happened yet, this is expected - try again in a few minutes.</div>`;
+    document.getElementById("live-dot").className = "dot dead";
+  } finally {
+    btn.disabled = false;
+    btn.textContent = "Refresh now";
+  }
+}
+
+function updateLiveIndicator(hist) {
+  const latest = hist.history[hist.history.length - 1];
+  const dot = document.getElementById("live-dot");
+  if (!latest) { dot.className = "dot dead"; return; }
+  const ageMin = (Date.now() - new Date(latest.fetched_at).getTime()) / 60000;
+  dot.className = ageMin < 90 ? "dot" : "dot stale";
+}
+
+function render(hist, alerts) {
+  const history = hist.history || [];
+  const latest = history[history.length - 1];
+  const streaks = hist.streaks || {};
+  const streakList = Object.entries(streaks).sort((a, b) => b[1].last_profit_pct - a[1].last_profit_pct);
+
+  const statRow = latest ? `
+    <div class="stat-row">
+      <div class="stat"><span class="stat-label">Last checked</span><span class="stat-value" style="font-size:15px">${escapeHtml(latest.hour)}</span></div>
+      <div class="stat"><span class="stat-label">Pairs seen</span><span class="stat-value">${latest.market_count.toLocaleString()}</span></div>
+      <div class="stat"><span class="stat-label">Volume floor</span><span class="stat-value accent">${Math.round(latest.volume_floor).toLocaleString()}</span></div>
+      <div class="stat"><span class="stat-label">Candidates</span><span class="stat-value">${latest.candidates.length}</span></div>
+    </div>` : "";
+
+  let candidatesHtml;
+  if (streakList.length === 0) {
+    candidatesHtml = `<div class="card"><p class="empty-note">No arbitrage candidates right now - that's the normal, expected state most hours. This page pulls fresh data on its own every few minutes.</p></div>`;
+  } else {
+    candidatesHtml = streakList.map(([key, s]) => {
+      const nodes = key.split("|");
+      const pips = Array.from({ length: PERSISTENCE_HOURS }, (_, i) =>
+        `<span class="pip ${i < s.count ? "filled" : ""}"></span>`).join("");
+      const isHot = s.last_profit_pct > 20;
+      const cardClass = s.alerted ? "good" : "";
+      return `
+        <div class="card ${cardClass}">
+          <div class="cycle-row">
+            <div class="cycle-top">
+              <span class="cycle-path">${escapeHtml(formatCycle(nodes))}</span>
+              <span class="cycle-profit ${isHot ? "hot" : ""}">${s.last_profit_pct.toFixed(2)}%</span>
+            </div>
+            <div class="streak-bar">
+              <div class="streak-pips">${pips}</div>
+              <span class="streak-label">${s.count}/${PERSISTENCE_HOURS} consecutive hours ${s.alerted ? "- alerted" : "- not yet alerted"}</span>
+            </div>
+            ${isHot ? `<div class="flag-note">Unusually high profit for a real opportunity - double-check current in-game rates before trading; this may be a thin/illiquid pair the volume floor didn't fully catch.</div>` : ""}
+          </div>
+        </div>`;
+    }).join("");
+  }
+
+  const alertsHtml = alerts.length === 0
+    ? `<p class="empty-note">No confirmed alerts yet. One appears here the first time a cycle survives ${PERSISTENCE_HOURS} consecutive hourly checks.</p>`
+    : `<div class="table-scroll"><table><thead><tr><th>Cycle</th><th class="num">Profit</th><th>When</th></tr></thead><tbody>
+        ${alerts.map(a => `<tr><td>${escapeHtml(a.cycle_display || formatCycle(a.cycle_ids || []))}</td><td class="num">${(a.profit_pct || 0).toFixed(2)}%</td><td>${escapeHtml(timeAgo(a.timestamp))}</td></tr>`).join("")}
+      </tbody></table></div>`;
+
+  const historyRows = history.slice().reverse().map(h => `
+    <tr>
+      <td>${escapeHtml(h.hour)}</td>
+      <td class="num">${h.market_count.toLocaleString()}</td>
+      <td class="num">${Math.round(h.volume_floor).toLocaleString()}</td>
+      <td class="num">${h.candidates.length}</td>
+    </tr>`).join("");
+
+  document.getElementById("content").innerHTML = `
+    ${statRow}
+    <section>
+      <div class="section-head"><h2>Candidates &amp; persistence</h2><span class="section-note">needs ${PERSISTENCE_HOURS} consecutive hours to alert</span></div>
+      ${candidatesHtml}
+    </section>
+    <section>
+      <div class="section-head"><h2>Confirmed alerts</h2></div>
+      ${alertsHtml}
+    </section>
+    <section>
+      <div class="section-head"><h2>Recent hours</h2><span class="section-note">last ${history.length} checked</span></div>
+      <div class="table-scroll">
+        <table>
+          <thead><tr><th>Hour</th><th class="num">Pairs</th><th class="num">Volume floor</th><th class="num">Candidates</th></tr></thead>
+          <tbody>${historyRows}</tbody>
+        </table>
+      </div>
+    </section>
+  `;
+}
+
+loadData();
+setInterval(loadData, 3 * 60 * 1000);
+</script>
+
