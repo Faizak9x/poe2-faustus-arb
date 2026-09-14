@@ -150,9 +150,13 @@
 <script>
 const HISTORY_URL = "state/history.json?t=" + Date.now();
 const ALERTS_URL = "state/alerts.log?t=" + Date.now();
+const NAMES_URL = "currency_names.json?t=" + Date.now();
 const PERSISTENCE_HOURS = 2;
 
+let OVERRIDES = {};
+
 function humanize(rawId) {
+  if (OVERRIDES[rawId]) return OVERRIDES[rawId];
   let base = rawId.split("/").pop();
   if (base.startsWith("Currency")) base = base.slice("Currency".length);
   const spaced = base.replace(/(?<!^)(?=[A-Z])/g, " ").trim();
@@ -180,6 +184,13 @@ function timeAgo(isoOrLabel) {
   return Math.round(hrs / 24) + "d ago";
 }
 
+async function loadOverrides() {
+  try {
+    const res = await fetch(NAMES_URL, { cache: "no-store" });
+    if (res.ok) OVERRIDES = await res.json();
+  } catch (e) { /* no overrides file yet, that's fine */ }
+}
+
 async function loadData() {
   const btn = document.getElementById("refresh-btn");
   btn.disabled = true;
@@ -187,6 +198,8 @@ async function loadData() {
   const content = document.getElementById("content");
 
   try {
+    await loadOverrides();
+
     const histRes = await fetch(HISTORY_URL, { cache: "no-store" });
     if (!histRes.ok) throw new Error("history.json not found yet (status " + histRes.status + ") - the hourly check may not have run yet.");
     const hist = await histRes.json();
@@ -299,4 +312,3 @@ function render(hist, alerts) {
 loadData();
 setInterval(loadData, 3 * 60 * 1000);
 </script>
-
