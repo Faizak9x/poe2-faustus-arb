@@ -2,6 +2,8 @@
 
 *This product isn't affiliated with or endorsed by Grinding Gear Games in any way.*
 
+**Live dashboard: https://faizak9x.github.io/poe2-faustus-arb/** - always-current view of what the hourly check is finding, no GitHub login needed. Updates itself every few minutes.
+
 Detects triangular arbitrage opportunities on Path of Exile 2's in-game Currency
 Exchange (Faustus), using only GGG's own public data. It **only detects and
 alerts** - it never touches the game. You review every alert and execute
