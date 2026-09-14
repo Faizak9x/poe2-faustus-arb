@@ -361,6 +361,27 @@ to override any of them with the exact in-game name, e.g.:
 This only affects display text in alerts - it has no effect on the
 arbitrage math, which always operates on the raw ids.
 
+**Where these names actually came from:** I didn't guess most of these.
+poe.ninja's own PoE2 pages render an icon for every currency, and those
+icon URLs point at GGG's public art CDN (`web.poecdn.com/gen/image/...`)
+with the internal item path base64-encoded right into the URL - e.g. the
+icon for "Exalted Orb" decodes to `.../CurrencyAddModToRare.png`, which is
+the exact same id this API uses. Cross-referencing poe.ninja's displayed
+name against that decoded filename gives an authoritative id -> name
+mapping for free, no datamining or game files needed. To add more:
+1. Open the matching category on poe.ninja (e.g. `poe.ninja/poe2/economy/<league-slug>/currency`,
+   or `/omens`, `/verisium`, etc. for the sidebar categories).
+2. In the browser console: grab every `<img alt>` and decode its `src`'s
+   base64 segment (`atob()`) to a JSON object with an `f` field - that
+   field's filename is the id, `alt` is the confirmed real name.
+3. Add `"Metadata/Items/Currency/<Id>": "<Real Name>"` to `currency_names.json`.
+
+A caveat found doing this: don't assume a functionally-similar PoE1 name
+carries over - two of my initial guesses (`CurrencyRemoveMod` as "Orb of
+Annulment", `CurrencyCorrupt` as "Vaal Orb") turned out to be wrong; PoE2
+has separate ids for mechanics that look similar but aren't the same item.
+Verify against the real data rather than trusting the naming pattern alone.
+
 ---
 
 ## Configuration reference
