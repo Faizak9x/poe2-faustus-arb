@@ -1,0 +1,51 @@
+name: Faustus Arbitrage Hourly Check
+
+on:
+  schedule:
+    # Runs at 5 minutes past every hour (UTC), giving GGG's aggregation a
+    # small buffer after the hour boundary closes.
+    - cron: "5 * * * *"
+  workflow_dispatch: {}  # lets you click "Run workflow" manually to test
+
+permissions:
+  contents: write  # needed so the workflow can commit the updated state/ back
+
+concurrency:
+  group: faustus-arbitrage-hourly
+  cancel-in-progress: false
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Run arbitrage check
+        env:
+          CONTACT_EMAIL: ${{ secrets.CONTACT_EMAIL }}
+          APP_NAME: ${{ vars.APP_NAME }}
+          LEAGUE_NAME: ${{ vars.LEAGUE_NAME }}
+          REALM: ${{ vars.REALM }}
+          MIN_VOLUME_PERCENTILE: ${{ vars.MIN_VOLUME_PERCENTILE }}
+          MIN_VOLUME_ABS_FLOOR: ${{ vars.MIN_VOLUME_ABS_FLOOR }}
+          MIN_PROFIT_PCT: ${{ vars.MIN_PROFIT_PCT }}
+          PERSISTENCE_HOURS: ${{ vars.PERSISTENCE_HOURS }}
+          MAX_CYCLES_PER_RUN: ${{ vars.MAX_CYCLES_PER_RUN }}
+          NTFY_TOPIC: ${{ secrets.NTFY_TOPIC }}
+          DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
+        run: python -m src.main
+
+      - name: Commit updated state
+        run: |
+          git config user.name "faustus-arb-bot"
+          git config user.email "actions@users.noreply.github.com"
+          git add state/
+          git diff --cached --quiet || git commit -m "Update arbitrage state"
+          git push
