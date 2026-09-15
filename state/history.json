@@ -1,23 +1,6 @@
 {
-  "next_fetch_id": 1789462800,
+  "next_fetch_id": 1789466400,
   "history": [
-    {
-      "change_id": 1789441200,
-      "hour": "2026-09-15 03:00 UTC",
-      "fetched_at": "2026-09-15T08:45:22Z",
-      "league": "Forbidden Rites",
-      "market_count": 2144,
-      "volume_floor": 307,
-      "candidates": [
-        {
-          "cycle": [
-            "Metadata/Items/Currency/CurrencyAddModToRare",
-            "Metadata/Items/Currency/CurrencyArmourQuality"
-          ],
-          "profit_pct": 75.0
-        }
-      ]
-    },
     {
       "change_id": 1789444800,
       "hour": "2026-09-15 04:00 UTC",
@@ -174,14 +157,46 @@
           "profit_pct": 3.5
         }
       ]
+    },
+    {
+      "change_id": 1789462800,
+      "hour": "2026-09-15 09:00 UTC",
+      "fetched_at": "2026-09-15T10:13:55Z",
+      "league": "Forbidden Rites",
+      "market_count": 2189,
+      "volume_floor": 386,
+      "candidates": [
+        {
+          "cycle": [
+            "Metadata/Items/Currency/CurrencyAddModToRare",
+            "Metadata/Items/Currency/CurrencyArmourQuality"
+          ],
+          "profit_pct": 100.0
+        },
+        {
+          "cycle": [
+            "Metadata/Items/Currency/CurrencyAddModToRare",
+            "Metadata/Items/Currency/CurrencyJewelleryQualityAttack",
+            "Metadata/Items/Currency/CurrencyModValues",
+            "Metadata/Items/Currency/CurrencyRerollRemnant"
+          ],
+          "profit_pct": 30.0
+        }
+      ]
     }
   ],
   "streaks": {
-    "Metadata/Items/Currency/CurrencyAddModToRare|Metadata/Items/Currency/CurrencyModValues|Metadata/Items/Currency/CurrencyRerollRemnant": {
-      "count": 2,
-      "last_change_id": 1789459200,
-      "last_profit_pct": 3.500000000000014,
-      "alerted": true
+    "Metadata/Items/Currency/CurrencyAddModToRare|Metadata/Items/Currency/CurrencyArmourQuality": {
+      "count": 1,
+      "last_change_id": 1789462800,
+      "last_profit_pct": 100.0,
+      "alerted": false
+    },
+    "Metadata/Items/Currency/CurrencyAddModToRare|Metadata/Items/Currency/CurrencyJewelleryQualityAttack|Metadata/Items/Currency/CurrencyModValues|Metadata/Items/Currency/CurrencyRerollRemnant": {
+      "count": 1,
+      "last_change_id": 1789462800,
+      "last_profit_pct": 29.999999999999915,
+      "alerted": false
     }
   }
 }
