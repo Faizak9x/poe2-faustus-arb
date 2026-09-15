@@ -306,7 +306,20 @@ fine for non-secret settings):
 4. After ~30-60 seconds, click into the run to see its log - you should
    see it fetch data and print a summary line. Any problems (like a typo
    in `LEAGUE_NAME`) will show here in plain text.
-5. From now on, it runs automatically every hour (at :05 past) forever,
+5. From now on, it checks 4 times an hour (at :07, :22, :37, and :52 past)
+   forever, with no further action from you. Each run updates `state/` in
+   your repo so it remembers what it saw last hour.
+
+   **Why 4 times, not 1:** the very first version of this schedule ran
+   once at :05 past. Checking the Actions run history a few hours later
+   showed a 3.5-hour gap between two runs that should have been an hour
+   apart - GitHub's own docs confirm scheduled triggers "may be delayed"
+   or dropped "during periods of high loads," and :00-:05 past the hour is
+   the single most congested minute across all of GitHub Actions, since
+   that's where most other users also point their cron jobs. Spreading
+   across 4 off-peak minutes instead is what actually fixed it. If you
+   ever notice hours missing from `state/history.json`, check the Actions
+   tab's run history for gaps the same way.
    with no further action from you. Each run updates `state/` in your repo
    so it remembers what it saw last hour.
 
