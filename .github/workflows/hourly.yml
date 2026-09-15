@@ -2,9 +2,15 @@ name: Faustus Arbitrage Hourly Check
 
 on:
   schedule:
-    # Runs at 5 minutes past every hour (UTC), giving GGG's aggregation a
-    # small buffer after the hour boundary closes.
-    - cron: "5 * * * *"
+    # GitHub's "schedule" trigger is best-effort and can be delayed or
+    # silently dropped, especially right at the top of the hour (:00-:05)
+    # since that's the most congested minute across all of GitHub Actions.
+    # To compensate, we check 4 times an hour at off-peak minutes instead
+    # of once at the worst one - the script is cheap and safe to run more
+    # often than hourly (it just reports "not closed yet" and exits if
+    # there's nothing new), so only ONE of these four needs to get through
+    # for the hour to be caught.
+    - cron: "7,22,37,52 * * * *"
   workflow_dispatch: {}  # lets you click "Run workflow" manually to test
 
 permissions:
