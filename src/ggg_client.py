@@ -86,7 +86,14 @@ def fetch_digest(cfg: Config, fetch_id: Optional[int], session: Optional[request
             time.sleep(wait_s)
             continue
 
-        if resp.status_code != 200:
+        # GGG's endpoint is inconsistent about the status code for "this hour
+        # hasn't closed/aggregated yet": sometimes it's a normal 200 with an
+        # empty markets list, but sometimes it's a 404 carrying that exact
+        # same valid body. Found live in production once the tool started
+        # catching up to the real current hour (calling frequently enough to
+        # actually hit this edge case) - a 404 here is not necessarily fatal,
+        # so we still try to parse the body before giving up on it.
+        if resp.status_code not in (200, 404):
             raise GGGApiError(
                 f"Unexpected status {resp.status_code} from {url}: {resp.text[:300]}"
             )
@@ -94,14 +101,20 @@ def fetch_digest(cfg: Config, fetch_id: Optional[int], session: Optional[request
         try:
             data = resp.json()
         except ValueError as exc:
+            if resp.status_code == 404:
+                raise GGGApiError(
+                    f"Status 404 from {url} with no parseable body: {resp.text[:300]}"
+                ) from exc
             raise GGGApiError(f"Non-JSON response from {url}: {exc}") from exc
 
         if "next_change_id" not in data or "markets" not in data:
-            raise GGGApiError(f"Unexpected response shape from {url}: keys={list(data.keys())}")
+            raise GGGApiError(
+                f"Unexpected response shape from {url} (status {resp.status_code}): "
+                f"keys={list(data.keys())}"
+            )
 
         return Digest(
             requested_id=fetch_id,
             next_change_id=int(data["next_change_id"]),
             markets=data["markets"],
         )
-
