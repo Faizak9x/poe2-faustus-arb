@@ -18,6 +18,7 @@ class Streak:
     last_change_id: int
     last_profit_pct: float
     alerted: bool = False
+    last_hops: list = field(default_factory=list)
 
 
 @dataclass
