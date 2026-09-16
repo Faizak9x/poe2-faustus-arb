@@ -12,7 +12,7 @@ from __future__ import annotations
 import sys
 from datetime import datetime, timezone
 
-from . import graph, names, notify, state as state_mod
+from . import graph, names, notify, price_cycles, state as state_mod
 from .config import load_config
 from .ggg_client import GGGApiError, bootstrap_id, fetch_digest
 
@@ -37,6 +37,7 @@ def _matching_league(markets, league_name: str):
 def run() -> int:
     cfg = load_config()
     st = state_mod.State.load(cfg.state_dir / "history.json")
+    price_store = price_cycles.load(cfg.state_dir / "price_cycles.json")
 
     fetch_id = st.next_fetch_id if st.next_fetch_id is not None else bootstrap_id()
 
@@ -63,6 +64,9 @@ def run() -> int:
     elif seen_leagues is not None:
         print(f"[warn] No markets matched LEAGUE_NAME={cfg.league_name!r} for "
               f"{_hour_label(fetch_id)}. Leagues seen this hour: {seen_leagues}")
+
+    hour_of_day = datetime.fromtimestamp(fetch_id, tz=timezone.utc).hour
+    price_cycles.update(price_store, matched, hour_of_day, _hour_label(fetch_id))
 
     volume_floor = graph.compute_volume_floor(
         matched, cfg.min_volume_abs_floor, cfg.min_volume_percentile
@@ -176,6 +180,7 @@ def run() -> int:
     st.history = st.history[-cfg.history_keep:]
     st.next_fetch_id = digest.next_change_id
     st.save(cfg.state_dir / "history.json")
+    price_cycles.save(price_store, cfg.state_dir / "price_cycles.json")
 
     return 0
 
