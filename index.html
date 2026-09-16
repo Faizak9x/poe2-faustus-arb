@@ -154,6 +154,9 @@
     border-top: 1px solid var(--border-soft); padding-top: 12px; font-size: 14px; line-height: 1.7;
   }
   .calc-result b { color: var(--accent); }
+  .price-bars { display: flex; align-items: flex-end; gap: 2px; height: 34px; }
+  .price-bar { flex: 1; background: var(--border-soft); border-radius: 2px 2px 0 0; min-height: 4px; }
+  .price-bar.now { background: var(--accent); }
   .loading { display: flex; align-items: center; gap: 10px; color: var(--text-muted); font-size: 14px; padding: 30px 0; }
   .spinner {
     width: 16px; height: 16px; border-radius: 50%; border: 2px solid var(--border);
@@ -213,7 +216,9 @@
 const HISTORY_URL = "state/history.json?t=" + Date.now();
 const ALERTS_URL = "state/alerts.log?t=" + Date.now();
 const NAMES_URL = "currency_names.json?t=" + Date.now();
+const PRICE_CYCLES_URL = "state/price_cycles.json?t=" + Date.now();
 const PERSISTENCE_HOURS = 2;
+const MIN_PRICE_SAMPLES = 24;
 
 let OVERRIDES = {};
 
@@ -294,12 +299,21 @@ function renderHopTable(hops) {
 
 let lastHist = null;
 let lastAlerts = [];
+let lastPriceCycles = { currencies: {} };
 
 async function loadOverrides() {
   try {
     const res = await fetch(NAMES_URL, { cache: "no-store" });
     if (res.ok) OVERRIDES = await res.json();
   } catch (e) { /* no overrides file yet, that's fine */ }
+}
+
+async function loadPriceCycles() {
+  try {
+    const res = await fetch(PRICE_CYCLES_URL, { cache: "no-store" });
+    if (res.ok) return await res.json();
+  } catch (e) { /* no price_cycles.json yet, that's fine */ }
+  return { currencies: {} };
 }
 
 async function loadData() {
@@ -324,9 +338,12 @@ async function loadData() {
       }
     } catch (e) { }
 
+    const priceCycles = await loadPriceCycles();
+
     lastHist = hist;
     lastAlerts = alertLines;
-    render(hist, alertLines);
+    lastPriceCycles = priceCycles;
+    render(hist, alertLines, priceCycles);
     updateLiveIndicator(hist);
   } catch (err) {
     content.innerHTML = `<div class="error-card">Couldn't load live data: ${escapeHtml(err.message)}<br><br>If this repo was just made public or the first hourly run hasn't happened yet, this is expected - try again in a few minutes.</div>`;
@@ -342,7 +359,7 @@ function onControlsChanged() {
     localStorage.setItem("startAmount", document.getElementById("start-amount").value);
     localStorage.setItem("goldPerLeg", document.getElementById("gold-per-leg").value);
   } catch (e) { /* private window / storage blocked - fine, just won't persist */ }
-  if (lastHist) render(lastHist, lastAlerts);
+  if (lastHist) render(lastHist, lastAlerts, lastPriceCycles);
 }
 
 function restoreControls() {
@@ -410,7 +427,68 @@ function updateLiveIndicator(hist) {
   dot.className = ageMin < 90 ? "dot" : "dot stale";
 }
 
-function render(hist, alerts) {
+function renderPriceCycles(priceCycles) {
+  const currencies = (priceCycles && priceCycles.currencies) || {};
+  const rows = [];
+
+  for (const [id, anchors] of Object.entries(currencies)) {
+    let best = null;
+    for (const [anchorName, entry] of Object.entries(anchors)) {
+      const total = entry.buckets.reduce((sum, b) => sum + b.count, 0);
+      if (!best || total > best.total) best = { anchorName, entry, total };
+    }
+    if (!best || best.total < MIN_PRICE_SAMPLES || best.entry.last_price == null) continue;
+    rows.push({ id, anchorName: best.anchorName, entry: best.entry, total: best.total });
+  }
+
+  if (rows.length === 0) {
+    return `<p class="empty-note">Not enough data yet to build hourly price patterns - this needs roughly 2-3 weeks of hourly checks per currency before it's meaningful. Check back later.</p>`;
+  }
+
+  rows.forEach(r => {
+    const lo = r.entry.all_time_low.value, hi = r.entry.all_time_high.value;
+    r.rangePos = hi > lo ? (r.entry.last_price - lo) / (hi - lo) : 0.5;
+  });
+  rows.sort((a, b) => a.rangePos - b.rangePos);
+
+  const nowHour = new Date().getUTCHours();
+
+  const cards = rows.slice(0, 20).map(r => {
+    const { id, anchorName, entry, total } = r;
+    const anchorLabel = anchorName === "chaos" ? "Chaos Orb" : "Divine Orb";
+    const means = entry.buckets.map(b => b.count > 0 ? b.mean : null);
+    const validMeans = means.filter(m => m !== null);
+    const maxMean = Math.max(...validMeans);
+    const minMean = Math.min(...validMeans);
+    const cheapHour = means.indexOf(minMean);
+    const pricyHour = means.indexOf(maxMean);
+    const spread = (maxMean - minMean) || 1;
+
+    const bars = means.map((m, h) => {
+      const height = m === null ? 4 : 6 + Math.round(((m - minMean) / spread) * 24);
+      const label = m !== null ? m.toLocaleString(undefined, { maximumSignificantDigits: 4 }) : "no data";
+      return `<div class="price-bar ${h === nowHour ? "now" : ""}" style="height:${height}px" title="${h}:00 UTC - ${label}"></div>`;
+    }).join("");
+
+    const fromLowPct = (entry.last_price - entry.all_time_low.value) / entry.all_time_low.value * 100;
+    const fromHighPct = (entry.last_price - entry.all_time_high.value) / entry.all_time_high.value * 100;
+
+    return `
+      <div class="card">
+        <div class="cycle-top">
+          <span class="cycle-path">${escapeHtml(humanize(id))}</span>
+          <span class="streak-label">vs ${anchorLabel} &middot; ${total} samples</span>
+        </div>
+        <div class="price-bars">${bars}</div>
+        <div class="gold-line">Now: ${entry.last_price.toLocaleString(undefined, { maximumSignificantDigits: 5 })} &middot; cheapest ~${cheapHour}:00 UTC &middot; priciest ~${pricyHour}:00 UTC</div>
+        <div class="gold-line">${fromLowPct >= 0 ? "+" : ""}${fromLowPct.toFixed(1)}% from all-time low, ${fromHighPct.toFixed(1)}% from all-time high</div>
+      </div>`;
+  }).join("");
+
+  return `<p class="empty-note">Sorted closest-to-historic-low first. Needs ~2-3 weeks of data per currency to be reliable - treat anything under a few hundred samples as a rough early read.</p>${cards}`;
+}
+
+function render(hist, alerts, priceCycles) {
   const history = hist.history || [];
   const latest = history[history.length - 1];
   const streaks = hist.streaks || {};
@@ -492,6 +570,10 @@ function render(hist, alerts) {
           <tbody>${historyRows}</tbody>
         </table>
       </div>
+    </section>
+    <section>
+      <div class="section-head"><h2>Price cycles</h2><span class="section-note">cheap/expensive hours by currency, UTC</span></div>
+      ${renderPriceCycles(priceCycles)}
     </section>
   `;
 }
