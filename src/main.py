@@ -100,6 +100,16 @@ def run() -> int:
             last_change_id=fetch_id,
             last_profit_pct=c.profit_pct,
             alerted=alerted,
+            last_hops=[
+                {
+                    "from": h.from_id,
+                    "to": h.to_id,
+                    "rate": h.rate,
+                    "volume_from": h.volume_from,
+                    "volume_to": h.volume_to,
+                }
+                for h in c.hops
+            ],
         )
 
         if count >= cfg.persistence_hours and not alerted:
@@ -121,6 +131,16 @@ def run() -> int:
             "league": cfg.league_name,
             "timestamp": _iso_now(),
             "hour": _hour_label(fetch_id),
+            "hops": [
+                {
+                    "from": h.from_id,
+                    "to": h.to_id,
+                    "rate": h.rate,
+                    "volume_from": h.volume_from,
+                    "volume_to": h.volume_to,
+                }
+                for h in c.hops
+            ],
         })
 
     if cycles and not to_alert:
@@ -136,7 +156,21 @@ def run() -> int:
         "market_count": len(matched),
         "volume_floor": round(volume_floor, 2),
         "candidates": [
-            {"cycle": list(c.nodes), "profit_pct": round(c.profit_pct, 4)} for c in cycles
+            {
+                "cycle": list(c.nodes),
+                "profit_pct": round(c.profit_pct, 4),
+                "hops": [
+                    {
+                        "from": h.from_id,
+                        "to": h.to_id,
+                        "rate": h.rate,
+                        "volume_from": h.volume_from,
+                        "volume_to": h.volume_to,
+                    }
+                    for h in c.hops
+                ],
+            }
+            for c in cycles
         ],
     })
     st.history = st.history[-cfg.history_keep:]
