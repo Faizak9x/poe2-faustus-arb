@@ -1,32 +1,6 @@
 {
-  "next_fetch_id": 1789560000,
+  "next_fetch_id": 1789563600,
   "history": [
-    {
-      "change_id": 1789538400,
-      "hour": "2026-09-16 06:00 UTC",
-      "fetched_at": "2026-09-16T07:00:32Z",
-      "league": "Forbidden Rites",
-      "market_count": 2112,
-      "volume_floor": 329,
-      "candidates": [
-        {
-          "cycle": [
-            "Metadata/Items/Currency/CurrencyAddModToRare",
-            "Metadata/Items/Currency/CurrencyModValues",
-            "Metadata/Items/Currency/CurrencyRerollRemnant"
-          ],
-          "profit_pct": 53.2889
-        },
-        {
-          "cycle": [
-            "Metadata/Items/Currency/CurrencyAddModToMagic3",
-            "Metadata/Items/Currency/CurrencyRerollRare",
-            "Metadata/Items/Currency/CurrencyAddModToRare"
-          ],
-          "profit_pct": 7.1429
-        }
-      ]
-    },
     {
       "change_id": 1789542000,
       "hour": "2026-09-16 07:00 UTC",
@@ -187,13 +161,57 @@
           "profit_pct": 140.0
         }
       ]
+    },
+    {
+      "change_id": 1789560000,
+      "hour": "2026-09-16 12:00 UTC",
+      "fetched_at": "2026-09-16T13:00:37Z",
+      "league": "Forbidden Rites",
+      "market_count": 2292,
+      "volume_floor": 438,
+      "candidates": [
+        {
+          "cycle": [
+            "Metadata/Items/Currency/CurrencyAddModToRare",
+            "Metadata/Items/Currency/CurrencyBreachShard"
+          ],
+          "profit_pct": 200.0
+        },
+        {
+          "cycle": [
+            "Metadata/Items/Currency/CurrencyAddModToRare",
+            "Metadata/Items/Currency/CurrencyArmourQuality"
+          ],
+          "profit_pct": 100.0
+        },
+        {
+          "cycle": [
+            "Metadata/Items/Currency/CurrencyAddModToRare",
+            "Metadata/Items/Currency/CurrencyModValues",
+            "Metadata/Items/Currency/CurrencyRerollRemnant"
+          ],
+          "profit_pct": 39.8601
+        }
+      ]
     }
   ],
   "streaks": {
     "Metadata/Items/Currency/CurrencyAddModToRare|Metadata/Items/Currency/CurrencyBreachShard": {
+      "count": 2,
+      "last_change_id": 1789560000,
+      "last_profit_pct": 199.99999999999994,
+      "alerted": true
+    },
+    "Metadata/Items/Currency/CurrencyAddModToRare|Metadata/Items/Currency/CurrencyArmourQuality": {
       "count": 1,
-      "last_change_id": 1789556400,
-      "last_profit_pct": 140.0,
+      "last_change_id": 1789560000,
+      "last_profit_pct": 100.0,
+      "alerted": false
+    },
+    "Metadata/Items/Currency/CurrencyAddModToRare|Metadata/Items/Currency/CurrencyModValues|Metadata/Items/Currency/CurrencyRerollRemnant": {
+      "count": 1,
+      "last_change_id": 1789560000,
+      "last_profit_pct": 39.86013986013985,
       "alerted": false
     }
   }
