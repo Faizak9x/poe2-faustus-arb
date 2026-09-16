@@ -45,10 +45,20 @@ class Edge:
 
 
 @dataclass
+class Hop:
+    from_id: str
+    to_id: str
+    rate: float  # units of to_id received per 1 unit of from_id
+    volume_from: float
+    volume_to: float
+
+
+@dataclass
 class Cycle:
     nodes: Tuple[str, ...]  # trade order, NOT repeating the closing node
     profit_pct: float
     min_volume: float
+    hops: Tuple[Hop, ...] = ()
 
 
 def _conservative_rate(lowest_ratio: dict, highest_ratio: dict, x: str, y: str) -> Optional[float]:
@@ -155,16 +165,20 @@ def _edge_lookup(edges: List[Edge]) -> Dict[Tuple[str, str], Edge]:
     return lookup
 
 
-def _cycle_profit_pct(cycle_nodes: List[str], lookup: Dict[Tuple[str, str], Edge]) -> Tuple[float, float]:
-    """Returns (profit_pct, min_volume_along_cycle). cycle_nodes repeats the closing node."""
+def _cycle_profit_pct(
+    cycle_nodes: List[str], lookup: Dict[Tuple[str, str], Edge]
+) -> Tuple[float, float, List[Hop]]:
+    """Returns (profit_pct, min_volume_along_cycle, hops). cycle_nodes repeats the closing node."""
     log_sum = 0.0
     min_vol = math.inf
+    hops: List[Hop] = []
     for i in range(len(cycle_nodes) - 1):
         e = lookup[(cycle_nodes[i], cycle_nodes[i + 1])]
         log_sum += -e.weight  # = log(rate)
         min_vol = min(min_vol, e.volume_u, e.volume_v)
+        hops.append(Hop(e.u, e.v, e.rate, e.volume_u, e.volume_v))
     multiplier = math.exp(log_sum)
-    return (multiplier - 1.0) * 100.0, min_vol
+    return (multiplier - 1.0) * 100.0, min_vol, hops
 
 
 def normalize_cycle(nodes: Tuple[str, ...]) -> Tuple[str, ...]:
@@ -195,12 +209,16 @@ def find_arbitrage_cycles(
             break
 
         lookup = _edge_lookup(working_edges)
-        profit_pct, min_vol = _cycle_profit_pct(cycle_path, lookup)
+        profit_pct, min_vol, hops = _cycle_profit_pct(cycle_path, lookup)
         cycle_nodes = tuple(cycle_path[:-1])
         norm = normalize_cycle(cycle_nodes)
 
         if profit_pct >= min_profit_pct and norm not in found:
-            found[norm] = Cycle(nodes=norm, profit_pct=profit_pct, min_volume=min_vol)
+            # hops were computed in cycle_path's order/start; rotate them to
+            # match norm's rotation so nodes[i] -> hops[i] lines up for callers.
+            rotate_by = cycle_nodes.index(norm[0])
+            norm_hops = tuple(hops[rotate_by:] + hops[:rotate_by])
+            found[norm] = Cycle(nodes=norm, profit_pct=profit_pct, min_volume=min_vol, hops=norm_hops)
 
         # Remove this cycle's edges so the next Bellman-Ford pass can surface
         # a different negative cycle instead of re-finding the same one.
@@ -212,4 +230,3 @@ def find_arbitrage_cycles(
             break
 
     return sorted(found.values(), key=lambda c: c.profit_pct, reverse=True)
-
