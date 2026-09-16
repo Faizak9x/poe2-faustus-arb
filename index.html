@@ -119,6 +119,41 @@
     line-height: 1.6; display: flex; flex-wrap: wrap; justify-content: space-between; gap: 10px;
   }
   footer a { color: var(--accent); }
+  .control-row {
+    display: flex; flex-wrap: wrap; align-items: center; gap: 10px 20px;
+    border: 1px solid var(--border); border-radius: 10px; padding: 12px 16px; background: var(--surface);
+  }
+  .control-field { display: flex; align-items: center; gap: 8px; }
+  .control-field label { font-size: 12.5px; color: var(--text-muted); white-space: nowrap; }
+  .control-field input {
+    font-family: var(--mono); font-size: 13px; width: 90px; padding: 5px 8px;
+    background: var(--surface-2); border: 1px solid var(--border); border-radius: 6px; color: var(--text);
+  }
+  .control-note { font-size: 12px; color: var(--text-faint); }
+  .hop-table { width: 100%; border-collapse: collapse; font-size: 12.5px; margin-top: 2px; }
+  .hop-table th {
+    text-align: left; font-size: 10.5px; letter-spacing: 0.04em; text-transform: uppercase; color: var(--text-faint);
+    font-weight: 600; padding: 6px 10px; border-bottom: 1px solid var(--border-soft);
+  }
+  .hop-table td { padding: 6px 10px; border-bottom: 1px solid var(--border-soft); font-family: var(--mono); white-space: nowrap; }
+  .hop-table td.arrow { font-family: var(--body); color: var(--text-faint); }
+  .hop-table tr:last-child td { border-bottom: none; }
+  .gold-line { font-size: 12.5px; color: var(--text-muted); font-family: var(--mono); }
+  .calc-card {
+    border: 1px solid var(--border); border-radius: 10px; padding: 18px 20px; background: var(--surface);
+    display: flex; flex-direction: column; gap: 12px;
+  }
+  .calc-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px; }
+  .calc-field { display: flex; flex-direction: column; gap: 4px; }
+  .calc-field label { font-size: 12px; color: var(--text-muted); }
+  .calc-field input {
+    font-family: var(--mono); font-size: 14px; padding: 7px 10px;
+    background: var(--surface-2); border: 1px solid var(--border); border-radius: 6px; color: var(--text);
+  }
+  .calc-result {
+    border-top: 1px solid var(--border-soft); padding-top: 12px; font-size: 14px; line-height: 1.7;
+  }
+  .calc-result b { color: var(--accent); }
   .loading { display: flex; align-items: center; gap: 10px; color: var(--text-muted); font-size: 14px; padding: 30px 0; }
   .spinner {
     width: 16px; height: 16px; border-radius: 50%; border: 2px solid var(--border);
@@ -137,9 +172,36 @@
     <button class="refresh-btn" id="refresh-btn" onclick="loadData()">Refresh now</button>
   </div>
 
+  <div class="control-row">
+    <div class="control-field">
+      <label for="start-amount">Trade with</label>
+      <input type="number" id="start-amount" value="100" min="0" step="any" oninput="onControlsChanged()">
+      <label for="start-amount" style="margin-left:-4px">units of the first currency</label>
+    </div>
+    <div class="control-field">
+      <label for="gold-per-leg">Gold cost per trade leg</label>
+      <input type="number" id="gold-per-leg" value="" min="0" step="any" placeholder="e.g. 50" oninput="onControlsChanged()">
+    </div>
+    <span class="control-note">Recomputed live from these two numbers - check them against what Faustus actually shows before you trade.</span>
+  </div>
+
   <div id="content">
     <div class="loading"><span class="spinner"></span>Loading live data&hellip;</div>
   </div>
+
+  <section>
+    <div class="section-head"><h2>Is leeching gold rotas worth it?</h2></div>
+    <div class="calc-card">
+      <p class="empty-note">GGG hasn't published the exact Faustus gold-fee formula - testing by players suggests it scales with the size and rarity of what you're trading (small for a stack of Transmutes, heavier for Divines). There's no way to pull it from the API, so plug in what you actually observe in-game and this works out whether leeching for it is worth your time.</p>
+      <div class="calc-grid">
+        <div class="calc-field"><label>Gold per hour from your rota</label><input type="number" id="calc-gold-per-hour" min="0" step="any" placeholder="e.g. 40000" oninput="runGoldCalc()"></div>
+        <div class="calc-field"><label>Gold cost per full cycle (auto from above, or override)</label><input type="number" id="calc-gold-per-cycle" min="0" step="any" placeholder="e.g. 150" oninput="runGoldCalc()"></div>
+        <div class="calc-field"><label>Arbitrage cycles you actually execute per hour</label><input type="number" id="calc-cycles-per-hour" min="0" step="any" value="1" oninput="runGoldCalc()"></div>
+        <div class="calc-field"><label>Passive gold you'd earn anyway per hour (mapping, drops, vendoring)</label><input type="number" id="calc-passive-gold" min="0" step="any" placeholder="e.g. 20000" oninput="runGoldCalc()"></div>
+      </div>
+      <div class="calc-result" id="calc-result">Fill in the numbers above to see whether the rota time pays for itself.</div>
+    </div>
+  </section>
 
   <footer>
     <span>This product isn't affiliated with or endorsed by Grinding Gear Games in any way. Read-only view; every trade is executed manually in-game.</span>
@@ -184,6 +246,55 @@ function timeAgo(isoOrLabel) {
   return Math.round(hrs / 24) + "d ago";
 }
 
+function getStartAmount() {
+  const v = parseFloat(document.getElementById("start-amount").value);
+  return isFinite(v) && v > 0 ? v : 100;
+}
+
+function getGoldPerLeg() {
+  const v = parseFloat(document.getElementById("gold-per-leg").value);
+  return isFinite(v) && v >= 0 ? v : null;
+}
+
+function renderHopTable(hops) {
+  if (!hops || hops.length === 0) return "";
+  const startAmount = getStartAmount();
+  const goldPerLeg = getGoldPerLeg();
+  let amount = startAmount;
+  const rows = hops.map(h => {
+    const fromName = humanize(h.from);
+    const toName = humanize(h.to);
+    const nextAmount = amount * h.rate;
+    const row = `
+      <tr>
+        <td>${amount.toLocaleString(undefined, { maximumFractionDigits: 4 })} ${escapeHtml(fromName)}</td>
+        <td class="arrow">-&gt;</td>
+        <td>${nextAmount.toLocaleString(undefined, { maximumFractionDigits: 4 })} ${escapeHtml(toName)}</td>
+        <td>rate ${h.rate.toLocaleString(undefined, { maximumSignificantDigits: 6 })}</td>
+        <td>leg liquidity ~${Math.round(Math.min(h.volume_from, h.volume_to)).toLocaleString()}</td>
+      </tr>`;
+    amount = nextAmount;
+    return row;
+  }).join("");
+
+  const finalAmount = amount;
+  const startName = escapeHtml(humanize(hops[0].from));
+  const goldLine = goldPerLeg !== null
+    ? `<div class="gold-line">Est. gold cost to run this once: ~${(goldPerLeg * hops.length).toLocaleString()} gold (${goldPerLeg} x ${hops.length} legs - edit "Gold cost per trade leg" above based on what you see in-game for these currencies)</div>`
+    : `<div class="gold-line">Enter a "Gold cost per trade leg" above to see an estimated gold cost for this cycle.</div>`;
+
+  return `
+    <div class="table-scroll"><table class="hop-table">
+      <thead><tr><th>Start</th><th></th><th>End</th><th>Rate</th><th>Liquidity</th></tr></thead>
+      <tbody>${rows}</tbody>
+    </table></div>
+    <div class="gold-line">Net result: ${startAmount.toLocaleString()} ${startName} -&gt; ${finalAmount.toLocaleString(undefined, { maximumFractionDigits: 4 })} ${startName}</div>
+    ${goldLine}`;
+}
+
+let lastHist = null;
+let lastAlerts = [];
+
 async function loadOverrides() {
   try {
     const res = await fetch(NAMES_URL, { cache: "no-store" });
@@ -213,6 +324,8 @@ async function loadData() {
       }
     } catch (e) { }
 
+    lastHist = hist;
+    lastAlerts = alertLines;
     render(hist, alertLines);
     updateLiveIndicator(hist);
   } catch (err) {
@@ -222,6 +335,71 @@ async function loadData() {
     btn.disabled = false;
     btn.textContent = "Refresh now";
   }
+}
+
+function onControlsChanged() {
+  try {
+    localStorage.setItem("startAmount", document.getElementById("start-amount").value);
+    localStorage.setItem("goldPerLeg", document.getElementById("gold-per-leg").value);
+  } catch (e) { /* private window / storage blocked - fine, just won't persist */ }
+  if (lastHist) render(lastHist, lastAlerts);
+}
+
+function restoreControls() {
+  try {
+    const sa = localStorage.getItem("startAmount");
+    const gpl = localStorage.getItem("goldPerLeg");
+    if (sa !== null) document.getElementById("start-amount").value = sa;
+    if (gpl !== null) document.getElementById("gold-per-leg").value = gpl;
+
+    const calcIds = ["calc-gold-per-hour", "calc-gold-per-cycle", "calc-cycles-per-hour", "calc-passive-gold"];
+    calcIds.forEach(id => {
+      const v = localStorage.getItem(id);
+      if (v !== null) document.getElementById(id).value = v;
+    });
+  } catch (e) { /* ignore */ }
+  runGoldCalc();
+}
+
+function runGoldCalc() {
+  const ids = ["calc-gold-per-hour", "calc-gold-per-cycle", "calc-cycles-per-hour", "calc-passive-gold"];
+  ids.forEach(id => {
+    try { localStorage.setItem(id, document.getElementById(id).value); } catch (e) { /* ignore */ }
+  });
+
+  const goldPerHour = parseFloat(document.getElementById("calc-gold-per-hour").value);
+  let goldPerCycle = parseFloat(document.getElementById("calc-gold-per-cycle").value);
+  const cyclesPerHour = parseFloat(document.getElementById("calc-cycles-per-hour").value);
+  const passiveGold = parseFloat(document.getElementById("calc-passive-gold").value);
+  const result = document.getElementById("calc-result");
+
+  if (!isFinite(goldPerCycle) || goldPerCycle <= 0) {
+    const perLeg = getGoldPerLeg();
+    if (perLeg !== null) goldPerCycle = perLeg * 3;
+  }
+
+  if (!isFinite(goldPerHour) || goldPerHour <= 0 || !isFinite(goldPerCycle) || goldPerCycle <= 0 || !isFinite(cyclesPerHour) || cyclesPerHour < 0) {
+    result.textContent = "Fill in the numbers above to see whether the rota time pays for itself.";
+    return;
+  }
+
+  const goldNeededPerHour = goldPerCycle * cyclesPerHour;
+  const passive = isFinite(passiveGold) ? passiveGold : 0;
+  const shortfall = Math.max(0, goldNeededPerHour - passive);
+
+  let html;
+  if (shortfall <= 0) {
+    html = `Your normal play already earns <b>${passive.toLocaleString()} gold/hr</b>, which covers the <b>${goldNeededPerHour.toLocaleString()} gold/hr</b> this arbitrage tool would need at ${cyclesPerHour} cycle(s)/hr. `
+      + `<b>Leeching gold rotas for this specific purpose probably isn't worth it</b> - you're not gold-constrained, so that time is likely better spent elsewhere (mapping, crafting, or just more arbitrage checks).`;
+  } else {
+    const rotaMinutesPerHourOfTrading = (shortfall / goldPerHour) * 60;
+    html = `You're short <b>${shortfall.toLocaleString()} gold/hr</b> to sustain ${cyclesPerHour} cycle(s)/hr of arbitrage on top of your normal income. `
+      + `At ${goldPerHour.toLocaleString()} gold/hr from your rota, that's about <b>${rotaMinutesPerHourOfTrading.toFixed(1)} minutes of leeching</b> for every hour of trading. `
+      + (rotaMinutesPerHourOfTrading > 20
+        ? `That's a meaningful time cost - worth asking whether those same minutes would earn more currency spent mapping/farming directly instead of funding gold.`
+        : `That's a fairly small time cost relative to an hour - probably worth it if the rota is easy/passive (e.g. you're leeching while doing something else).`);
+  }
+  result.innerHTML = html;
 }
 
 function updateLiveIndicator(hist) {
@@ -268,6 +446,7 @@ function render(hist, alerts) {
               <span class="streak-label">${s.count}/${PERSISTENCE_HOURS} consecutive hours ${s.alerted ? "- alerted" : "- not yet alerted"}</span>
             </div>
             ${isHot ? `<div class="flag-note">Unusually high profit for a real opportunity - double-check current in-game rates before trading; this may be a thin/illiquid pair the volume floor didn't fully catch.</div>` : ""}
+            ${renderHopTable(s.last_hops)}
           </div>
         </div>`;
     }).join("");
@@ -275,9 +454,17 @@ function render(hist, alerts) {
 
   const alertsHtml = alerts.length === 0
     ? `<p class="empty-note">No confirmed alerts yet. One appears here the first time a cycle survives ${PERSISTENCE_HOURS} consecutive hourly checks.</p>`
-    : `<div class="table-scroll"><table><thead><tr><th>Cycle</th><th class="num">Profit</th><th>When</th></tr></thead><tbody>
-        ${alerts.map(a => `<tr><td>${escapeHtml(a.cycle_display || formatCycle(a.cycle_ids || []))}</td><td class="num">${(a.profit_pct || 0).toFixed(2)}%</td><td>${escapeHtml(timeAgo(a.timestamp))}</td></tr>`).join("")}
-      </tbody></table></div>`;
+    : alerts.map(a => `
+        <div class="card good">
+          <div class="cycle-row">
+            <div class="cycle-top">
+              <span class="cycle-path">${escapeHtml(a.cycle_display || formatCycle(a.cycle_ids || []))}</span>
+              <span class="cycle-profit">${(a.profit_pct || 0).toFixed(2)}%</span>
+            </div>
+            <span class="streak-label">${escapeHtml(timeAgo(a.timestamp))}</span>
+            ${renderHopTable(a.hops)}
+          </div>
+        </div>`).join("");
 
   const historyRows = history.slice().reverse().map(h => `
     <tr>
@@ -309,6 +496,7 @@ function render(hist, alerts) {
   `;
 }
 
+restoreControls();
 loadData();
 setInterval(loadData, 3 * 60 * 1000);
 </script>
