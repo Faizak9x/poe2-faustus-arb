@@ -1,102 +1,6 @@
 {
-  "next_fetch_id": 1791622800,
+  "next_fetch_id": 1791626400,
   "history": [
-    {
-      "change_id": 1791601200,
-      "hour": "2026-10-10 03:00 UTC",
-      "fetched_at": "2026-10-10T04:00:33Z",
-      "league": "Forbidden Rites",
-      "market_count": 1805,
-      "volume_floor": 199,
-      "candidates": [
-        {
-          "cycle": [
-            "Metadata/Items/Currency/CurrencyAddModToRare",
-            "Metadata/Items/Currency/OmenOnChaosMapPackSize",
-            "Metadata/Items/Currency/CurrencyRerollRare",
-            "Metadata/Items/Pinnacle/BurningMonolithKey2",
-            "Metadata/Items/Currency/CurrencyModValues",
-            "Metadata/Items/Currency/CurrencyRerollRemnant"
-          ],
-          "profit_pct": 36.1361,
-          "hops": [
-            {
-              "from": "Metadata/Items/Currency/CurrencyAddModToRare",
-              "to": "Metadata/Items/Currency/OmenOnChaosMapPackSize",
-              "rate": 0.003003003003003003,
-              "volume_from": 105955,
-              "volume_to": 346
-            },
-            {
-              "from": "Metadata/Items/Currency/OmenOnChaosMapPackSize",
-              "to": "Metadata/Items/Currency/CurrencyRerollRare",
-              "rate": 6.0,
-              "volume_from": 3035,
-              "volume_to": 20982
-            },
-            {
-              "from": "Metadata/Items/Currency/CurrencyRerollRare",
-              "to": "Metadata/Items/Pinnacle/BurningMonolithKey2",
-              "rate": 0.007407407407407408,
-              "volume_from": 31194,
-              "volume_to": 239
-            },
-            {
-              "from": "Metadata/Items/Pinnacle/BurningMonolithKey2",
-              "to": "Metadata/Items/Currency/CurrencyModValues",
-              "rate": 12.0,
-              "volume_from": 789,
-              "volume_to": 10036
-            },
-            {
-              "from": "Metadata/Items/Currency/CurrencyModValues",
-              "to": "Metadata/Items/Currency/CurrencyRerollRemnant",
-              "rate": 17.0,
-              "volume_from": 548,
-              "volume_to": 10782
-            },
-            {
-              "from": "Metadata/Items/Currency/CurrencyRerollRemnant",
-              "to": "Metadata/Items/Currency/CurrencyAddModToRare",
-              "rate": 50.0,
-              "volume_from": 199,
-              "volume_to": 10681
-            }
-          ]
-        },
-        {
-          "cycle": [
-            "Metadata/Items/Currency/CurrencyAddModToMagic3",
-            "Metadata/Items/Currency/CurrencyModValues",
-            "Metadata/Items/Currency/CurrencyAddModToRare"
-          ],
-          "profit_pct": 34.6154,
-          "hops": [
-            {
-              "from": "Metadata/Items/Currency/CurrencyAddModToMagic3",
-              "to": "Metadata/Items/Currency/CurrencyModValues",
-              "rate": 0.25,
-              "volume_from": 7965,
-              "volume_to": 2183
-            },
-            {
-              "from": "Metadata/Items/Currency/CurrencyModValues",
-              "to": "Metadata/Items/Currency/CurrencyAddModToRare",
-              "rate": 700.0,
-              "volume_from": 1228,
-              "volume_to": 941213
-            },
-            {
-              "from": "Metadata/Items/Currency/CurrencyAddModToRare",
-              "to": "Metadata/Items/Currency/CurrencyAddModToMagic3",
-              "rate": 0.007692307692307693,
-              "volume_from": 34017,
-              "volume_to": 329
-            }
-          ]
-        }
-      ]
-    },
     {
       "change_id": 1791604800,
       "hour": "2026-10-10 04:00 UTC",
@@ -848,157 +752,376 @@
           ]
         }
       ]
+    },
+    {
+      "change_id": 1791622800,
+      "hour": "2026-10-10 09:00 UTC",
+      "fetched_at": "2026-10-10T10:00:31Z",
+      "league": "Forbidden Rites",
+      "market_count": 1959,
+      "volume_floor": 194,
+      "candidates": [
+        {
+          "cycle": [
+            "Metadata/Items/Currency/CurrencyAddModToRare",
+            "Metadata/Items/Gems/SupportGemUncut5",
+            "Metadata/Items/Currency/CurrencyRerollRare"
+          ],
+          "profit_pct": 250.0,
+          "hops": [
+            {
+              "from": "Metadata/Items/Currency/CurrencyAddModToRare",
+              "to": "Metadata/Items/Gems/SupportGemUncut5",
+              "rate": 0.25,
+              "volume_from": 7274,
+              "volume_to": 2922
+            },
+            {
+              "from": "Metadata/Items/Gems/SupportGemUncut5",
+              "to": "Metadata/Items/Currency/CurrencyRerollRare",
+              "rate": 0.2,
+              "volume_from": 918,
+              "volume_to": 220
+            },
+            {
+              "from": "Metadata/Items/Currency/CurrencyRerollRare",
+              "to": "Metadata/Items/Currency/CurrencyAddModToRare",
+              "rate": 70.0,
+              "volume_from": 3851,
+              "volume_to": 297666
+            }
+          ]
+        },
+        {
+          "cycle": [
+            "Metadata/Items/Currency/CurrencyAddModToMagic3",
+            "Metadata/Items/Currency/CurrencyModValues",
+            "Metadata/Items/Currency/CurrencyRerollRemnant",
+            "Metadata/Items/Currency/CurrencyAddModToRare"
+          ],
+          "profit_pct": 75.0,
+          "hops": [
+            {
+              "from": "Metadata/Items/Currency/CurrencyAddModToMagic3",
+              "to": "Metadata/Items/Currency/CurrencyModValues",
+              "rate": 0.25,
+              "volume_from": 10077,
+              "volume_to": 2748
+            },
+            {
+              "from": "Metadata/Items/Currency/CurrencyModValues",
+              "to": "Metadata/Items/Currency/CurrencyRerollRemnant",
+              "rate": 14.0,
+              "volume_from": 576,
+              "volume_to": 8848
+            },
+            {
+              "from": "Metadata/Items/Currency/CurrencyRerollRemnant",
+              "to": "Metadata/Items/Currency/CurrencyAddModToRare",
+              "rate": 54.0,
+              "volume_from": 414,
+              "volume_to": 23278
+            },
+            {
+              "from": "Metadata/Items/Currency/CurrencyAddModToRare",
+              "to": "Metadata/Items/Currency/CurrencyAddModToMagic3",
+              "rate": 0.009259259259259259,
+              "volume_from": 68183,
+              "volume_to": 784
+            }
+          ]
+        },
+        {
+          "cycle": [
+            "Metadata/Items/Currency/CurrencyAddModToRare",
+            "Metadata/Items/Currency/CurrencyBreachShard",
+            "Metadata/Items/Currency/CurrencyModValues",
+            "Metadata/Items/Currency/CurrencyIncursionWeaponOrArmourQualityHigh",
+            "Metadata/Items/Currency/CurrencyRerollRare",
+            "Metadata/Items/Currency/CurrencyJewelleryQualityLightning"
+          ],
+          "profit_pct": 25.5172,
+          "hops": [
+            {
+              "from": "Metadata/Items/Currency/CurrencyAddModToRare",
+              "to": "Metadata/Items/Currency/CurrencyBreachShard",
+              "rate": 0.2,
+              "volume_from": 7385,
+              "volume_to": 1483
+            },
+            {
+              "from": "Metadata/Items/Currency/CurrencyBreachShard",
+              "to": "Metadata/Items/Currency/CurrencyModValues",
+              "rate": 0.011494252873563218,
+              "volume_from": 18167,
+              "volume_to": 214
+            },
+            {
+              "from": "Metadata/Items/Currency/CurrencyModValues",
+              "to": "Metadata/Items/Currency/CurrencyIncursionWeaponOrArmourQualityHigh",
+              "rate": 0.5,
+              "volume_from": 2532,
+              "volume_to": 1308
+            },
+            {
+              "from": "Metadata/Items/Currency/CurrencyIncursionWeaponOrArmourQualityHigh",
+              "to": "Metadata/Items/Currency/CurrencyRerollRare",
+              "rate": 21.0,
+              "volume_from": 873,
+              "volume_to": 19290
+            },
+            {
+              "from": "Metadata/Items/Currency/CurrencyRerollRare",
+              "to": "Metadata/Items/Currency/CurrencyJewelleryQualityLightning",
+              "rate": 4.0,
+              "volume_from": 325,
+              "volume_to": 1578
+            },
+            {
+              "from": "Metadata/Items/Currency/CurrencyJewelleryQualityLightning",
+              "to": "Metadata/Items/Currency/CurrencyAddModToRare",
+              "rate": 13.0,
+              "volume_from": 330,
+              "volume_to": 6168
+            }
+          ]
+        },
+        {
+          "cycle": [
+            "Metadata/Items/Currency/CurrencyModValues",
+            "Metadata/Items/Currency/CurrencyRerollRare"
+          ],
+          "profit_pct": 25.0,
+          "hops": [
+            {
+              "from": "Metadata/Items/Currency/CurrencyModValues",
+              "to": "Metadata/Items/Currency/CurrencyRerollRare",
+              "rate": 10.0,
+              "volume_from": 95485,
+              "volume_to": 1010995
+            },
+            {
+              "from": "Metadata/Items/Currency/CurrencyRerollRare",
+              "to": "Metadata/Items/Currency/CurrencyModValues",
+              "rate": 0.125,
+              "volume_from": 1756,
+              "volume_to": 231
+            }
+          ]
+        },
+        {
+          "cycle": [
+            "Metadata/Items/Currency/CurrencyAddModToRare",
+            "Metadata/Items/Currency/CurrencyCorruptedEssenceAbyss",
+            "Metadata/Items/Currency/CurrencyModValues",
+            "Metadata/Items/Currency/CurrencyCorrupt"
+          ],
+          "profit_pct": 9.0909,
+          "hops": [
+            {
+              "from": "Metadata/Items/Currency/CurrencyAddModToRare",
+              "to": "Metadata/Items/Currency/CurrencyCorruptedEssenceAbyss",
+              "rate": 0.008264462809917356,
+              "volume_from": 26740,
+              "volume_to": 223
+            },
+            {
+              "from": "Metadata/Items/Currency/CurrencyCorruptedEssenceAbyss",
+              "to": "Metadata/Items/Currency/CurrencyModValues",
+              "rate": 0.25,
+              "volume_from": 951,
+              "volume_to": 289
+            },
+            {
+              "from": "Metadata/Items/Currency/CurrencyModValues",
+              "to": "Metadata/Items/Currency/CurrencyCorrupt",
+              "rate": 66.0,
+              "volume_from": 1300,
+              "volume_to": 93556
+            },
+            {
+              "from": "Metadata/Items/Currency/CurrencyCorrupt",
+              "to": "Metadata/Items/Currency/CurrencyAddModToRare",
+              "rate": 8.0,
+              "volume_from": 6184,
+              "volume_to": 65104
+            }
+          ]
+        }
+      ]
     }
   ],
   "streaks": {
-    "Metadata/Items/Currency/CurrencyAddModToRare|Metadata/Items/Currency/CurrencyBreachShard|Metadata/Items/Currency/CurrencyRerollRare": {
+    "Metadata/Items/Currency/CurrencyModValues|Metadata/Items/Currency/CurrencyRerollRare": {
+      "count": 2,
+      "last_change_id": 1791622800,
+      "last_profit_pct": 25.000000000000043,
+      "alerted": true,
+      "last_hops": [
+        {
+          "from": "Metadata/Items/Currency/CurrencyModValues",
+          "to": "Metadata/Items/Currency/CurrencyRerollRare",
+          "rate": 10.0,
+          "volume_from": 95485,
+          "volume_to": 1010995
+        },
+        {
+          "from": "Metadata/Items/Currency/CurrencyRerollRare",
+          "to": "Metadata/Items/Currency/CurrencyModValues",
+          "rate": 0.125,
+          "volume_from": 1756,
+          "volume_to": 231
+        }
+      ]
+    },
+    "Metadata/Items/Currency/CurrencyAddModToRare|Metadata/Items/Gems/SupportGemUncut5|Metadata/Items/Currency/CurrencyRerollRare": {
       "count": 1,
-      "last_change_id": 1791619200,
-      "last_profit_pct": 64.4444444444445,
+      "last_change_id": 1791622800,
+      "last_profit_pct": 250.00000000000009,
+      "alerted": false,
+      "last_hops": [
+        {
+          "from": "Metadata/Items/Currency/CurrencyAddModToRare",
+          "to": "Metadata/Items/Gems/SupportGemUncut5",
+          "rate": 0.25,
+          "volume_from": 7274,
+          "volume_to": 2922
+        },
+        {
+          "from": "Metadata/Items/Gems/SupportGemUncut5",
+          "to": "Metadata/Items/Currency/CurrencyRerollRare",
+          "rate": 0.2,
+          "volume_from": 918,
+          "volume_to": 220
+        },
+        {
+          "from": "Metadata/Items/Currency/CurrencyRerollRare",
+          "to": "Metadata/Items/Currency/CurrencyAddModToRare",
+          "rate": 70.0,
+          "volume_from": 3851,
+          "volume_to": 297666
+        }
+      ]
+    },
+    "Metadata/Items/Currency/CurrencyAddModToMagic3|Metadata/Items/Currency/CurrencyModValues|Metadata/Items/Currency/CurrencyRerollRemnant|Metadata/Items/Currency/CurrencyAddModToRare": {
+      "count": 1,
+      "last_change_id": 1791622800,
+      "last_profit_pct": 75.0,
+      "alerted": false,
+      "last_hops": [
+        {
+          "from": "Metadata/Items/Currency/CurrencyAddModToMagic3",
+          "to": "Metadata/Items/Currency/CurrencyModValues",
+          "rate": 0.25,
+          "volume_from": 10077,
+          "volume_to": 2748
+        },
+        {
+          "from": "Metadata/Items/Currency/CurrencyModValues",
+          "to": "Metadata/Items/Currency/CurrencyRerollRemnant",
+          "rate": 14.0,
+          "volume_from": 576,
+          "volume_to": 8848
+        },
+        {
+          "from": "Metadata/Items/Currency/CurrencyRerollRemnant",
+          "to": "Metadata/Items/Currency/CurrencyAddModToRare",
+          "rate": 54.0,
+          "volume_from": 414,
+          "volume_to": 23278
+        },
+        {
+          "from": "Metadata/Items/Currency/CurrencyAddModToRare",
+          "to": "Metadata/Items/Currency/CurrencyAddModToMagic3",
+          "rate": 0.009259259259259259,
+          "volume_from": 68183,
+          "volume_to": 784
+        }
+      ]
+    },
+    "Metadata/Items/Currency/CurrencyAddModToRare|Metadata/Items/Currency/CurrencyBreachShard|Metadata/Items/Currency/CurrencyModValues|Metadata/Items/Currency/CurrencyIncursionWeaponOrArmourQualityHigh|Metadata/Items/Currency/CurrencyRerollRare|Metadata/Items/Currency/CurrencyJewelleryQualityLightning": {
+      "count": 1,
+      "last_change_id": 1791622800,
+      "last_profit_pct": 25.517241379310352,
       "alerted": false,
       "last_hops": [
         {
           "from": "Metadata/Items/Currency/CurrencyAddModToRare",
           "to": "Metadata/Items/Currency/CurrencyBreachShard",
           "rate": 0.2,
-          "volume_from": 9892,
-          "volume_to": 2027
+          "volume_from": 7385,
+          "volume_to": 1483
         },
         {
           "from": "Metadata/Items/Currency/CurrencyBreachShard",
+          "to": "Metadata/Items/Currency/CurrencyModValues",
+          "rate": 0.011494252873563218,
+          "volume_from": 18167,
+          "volume_to": 214
+        },
+        {
+          "from": "Metadata/Items/Currency/CurrencyModValues",
+          "to": "Metadata/Items/Currency/CurrencyIncursionWeaponOrArmourQualityHigh",
+          "rate": 0.5,
+          "volume_from": 2532,
+          "volume_to": 1308
+        },
+        {
+          "from": "Metadata/Items/Currency/CurrencyIncursionWeaponOrArmourQualityHigh",
           "to": "Metadata/Items/Currency/CurrencyRerollRare",
-          "rate": 0.1111111111111111,
-          "volume_from": 18379,
-          "volume_to": 2092
+          "rate": 21.0,
+          "volume_from": 873,
+          "volume_to": 19290
         },
         {
           "from": "Metadata/Items/Currency/CurrencyRerollRare",
+          "to": "Metadata/Items/Currency/CurrencyJewelleryQualityLightning",
+          "rate": 4.0,
+          "volume_from": 325,
+          "volume_to": 1578
+        },
+        {
+          "from": "Metadata/Items/Currency/CurrencyJewelleryQualityLightning",
           "to": "Metadata/Items/Currency/CurrencyAddModToRare",
-          "rate": 74.0,
-          "volume_from": 3869,
-          "volume_to": 300084
+          "rate": 13.0,
+          "volume_from": 330,
+          "volume_to": 6168
         }
       ]
     },
-    "Metadata/Items/Currency/CurrencyAddModToRare|Metadata/Items/Currency/OmenOnChaosMapPackSize|Metadata/Items/Currency/CurrencyRerollRare|Metadata/Items/Pinnacle/RitualPinnacleEffigyPiece|Metadata/Items/Currency/CurrencyModValues|Metadata/Items/Currency/CurrencyRerollRemnant": {
+    "Metadata/Items/Currency/CurrencyAddModToRare|Metadata/Items/Currency/CurrencyCorruptedEssenceAbyss|Metadata/Items/Currency/CurrencyModValues|Metadata/Items/Currency/CurrencyCorrupt": {
       "count": 1,
-      "last_change_id": 1791619200,
-      "last_profit_pct": 37.1196754563895,
+      "last_change_id": 1791622800,
+      "last_profit_pct": 9.090909090909038,
       "alerted": false,
       "last_hops": [
         {
           "from": "Metadata/Items/Currency/CurrencyAddModToRare",
-          "to": "Metadata/Items/Currency/OmenOnChaosMapPackSize",
-          "rate": 0.0028011204481792717,
-          "volume_from": 96677,
-          "volume_to": 296
+          "to": "Metadata/Items/Currency/CurrencyCorruptedEssenceAbyss",
+          "rate": 0.008264462809917356,
+          "volume_from": 26740,
+          "volume_to": 223
         },
         {
-          "from": "Metadata/Items/Currency/OmenOnChaosMapPackSize",
-          "to": "Metadata/Items/Currency/CurrencyRerollRare",
-          "rate": 6.0,
-          "volume_from": 3218,
-          "volume_to": 22459
-        },
-        {
-          "from": "Metadata/Items/Currency/CurrencyRerollRare",
-          "to": "Metadata/Items/Pinnacle/RitualPinnacleEffigyPiece",
-          "rate": 0.4482758620689655,
-          "volume_from": 5917,
-          "volume_to": 2993
-        },
-        {
-          "from": "Metadata/Items/Pinnacle/RitualPinnacleEffigyPiece",
+          "from": "Metadata/Items/Currency/CurrencyCorruptedEssenceAbyss",
           "to": "Metadata/Items/Currency/CurrencyModValues",
           "rate": 0.25,
-          "volume_from": 3812,
-          "volume_to": 1044
+          "volume_from": 951,
+          "volume_to": 289
         },
         {
           "from": "Metadata/Items/Currency/CurrencyModValues",
-          "to": "Metadata/Items/Currency/CurrencyRerollRemnant",
-          "rate": 14.0,
-          "volume_from": 805,
-          "volume_to": 13371
-        },
-        {
-          "from": "Metadata/Items/Currency/CurrencyRerollRemnant",
-          "to": "Metadata/Items/Currency/CurrencyAddModToRare",
-          "rate": 52.0,
-          "volume_from": 546,
-          "volume_to": 29911
-        }
-      ]
-    },
-    "Metadata/Items/Currency/CurrencyModValues|Metadata/Items/Currency/CurrencyRerollRare": {
-      "count": 1,
-      "last_change_id": 1791619200,
-      "last_profit_pct": 25.000000000000043,
-      "alerted": false,
-      "last_hops": [
-        {
-          "from": "Metadata/Items/Currency/CurrencyModValues",
-          "to": "Metadata/Items/Currency/CurrencyRerollRare",
-          "rate": 10.0,
-          "volume_from": 89274,
-          "volume_to": 939449
-        },
-        {
-          "from": "Metadata/Items/Currency/CurrencyRerollRare",
-          "to": "Metadata/Items/Currency/CurrencyModValues",
-          "rate": 0.125,
-          "volume_from": 1891,
-          "volume_to": 248
-        }
-      ]
-    },
-    "Metadata/Items/Currency/CurrencyAddModToRare|Metadata/Items/Currency/OmenOnChaosMapMonsterEffectiveness|Metadata/Items/Currency/CurrencyModValues|Metadata/Items/MapFragments/CurrencyAfflictionFragment|Metadata/Items/Currency/CurrencyRerollRare|Metadata/Items/Currency/CurrencyCorrupt": {
-      "count": 1,
-      "last_change_id": 1791619200,
-      "last_profit_pct": 10.526315789473761,
-      "alerted": false,
-      "last_hops": [
-        {
-          "from": "Metadata/Items/Currency/CurrencyAddModToRare",
-          "to": "Metadata/Items/Currency/OmenOnChaosMapMonsterEffectiveness",
-          "rate": 0.010526315789473684,
-          "volume_from": 30234,
-          "volume_to": 346
-        },
-        {
-          "from": "Metadata/Items/Currency/OmenOnChaosMapMonsterEffectiveness",
-          "to": "Metadata/Items/Currency/CurrencyModValues",
-          "rate": 0.16666666666666666,
-          "volume_from": 2547,
-          "volume_to": 509
-        },
-        {
-          "from": "Metadata/Items/Currency/CurrencyModValues",
-          "to": "Metadata/Items/MapFragments/CurrencyAfflictionFragment",
-          "rate": 0.25,
-          "volume_from": 6779,
-          "volume_to": 1735
-        },
-        {
-          "from": "Metadata/Items/MapFragments/CurrencyAfflictionFragment",
-          "to": "Metadata/Items/Currency/CurrencyRerollRare",
-          "rate": 40.0,
-          "volume_from": 493,
-          "volume_to": 20143
-        },
-        {
-          "from": "Metadata/Items/Currency/CurrencyRerollRare",
           "to": "Metadata/Items/Currency/CurrencyCorrupt",
-          "rate": 7.0,
-          "volume_from": 4254,
-          "volume_to": 31896
+          "rate": 66.0,
+          "volume_from": 1300,
+          "volume_to": 93556
         },
         {
           "from": "Metadata/Items/Currency/CurrencyCorrupt",
           "to": "Metadata/Items/Currency/CurrencyAddModToRare",
-          "rate": 9.0,
-          "volume_from": 3823,
-          "volume_to": 41806
+          "rate": 8.0,
+          "volume_from": 6184,
+          "volume_to": 65104
         }
       ]
     }
