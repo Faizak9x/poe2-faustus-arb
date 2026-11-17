@@ -1,94 +1,6 @@
 {
-  "next_fetch_id": 1794909600,
+  "next_fetch_id": 1794913200,
   "history": [
-    {
-      "change_id": 1794888000,
-      "hour": "2026-11-17 04:00 UTC",
-      "fetched_at": "2026-11-17T05:00:46Z",
-      "league": "Forbidden Rites",
-      "market_count": 1101,
-      "volume_floor": 60,
-      "candidates": [
-        {
-          "cycle": [
-            "Metadata/Items/Currency/CurrencyAddModToRare",
-            "Metadata/Items/Currency/CurrencyIdentification",
-            "Metadata/Items/Currency/CurrencyRerollRare",
-            "Metadata/Items/Currency/CurrencyJewelleryQualityMinion"
-          ],
-          "profit_pct": 279900.0,
-          "hops": [
-            {
-              "from": "Metadata/Items/Currency/CurrencyAddModToRare",
-              "to": "Metadata/Items/Currency/CurrencyIdentification",
-              "rate": 35.0,
-              "volume_from": 61,
-              "volume_to": 2135
-            },
-            {
-              "from": "Metadata/Items/Currency/CurrencyIdentification",
-              "to": "Metadata/Items/Currency/CurrencyRerollRare",
-              "rate": 1.0,
-              "volume_from": 395,
-              "volume_to": 395
-            },
-            {
-              "from": "Metadata/Items/Currency/CurrencyRerollRare",
-              "to": "Metadata/Items/Currency/CurrencyJewelleryQualityMinion",
-              "rate": 2.0,
-              "volume_from": 218,
-              "volume_to": 436
-            },
-            {
-              "from": "Metadata/Items/Currency/CurrencyJewelleryQualityMinion",
-              "to": "Metadata/Items/Currency/CurrencyAddModToRare",
-              "rate": 40.0,
-              "volume_from": 100,
-              "volume_to": 4000
-            }
-          ]
-        },
-        {
-          "cycle": [
-            "Metadata/Items/Currency/Abyss/AbyssPinnacleKey",
-            "Metadata/Items/Currency/CurrencyModValues",
-            "Metadata/Items/Currency/CurrencyRerollRemnant",
-            "Metadata/Items/Currency/CurrencyRerollRare"
-          ],
-          "profit_pct": 14.8936,
-          "hops": [
-            {
-              "from": "Metadata/Items/Currency/Abyss/AbyssPinnacleKey",
-              "to": "Metadata/Items/Currency/CurrencyModValues",
-              "rate": 5.0,
-              "volume_from": 114,
-              "volume_to": 575
-            },
-            {
-              "from": "Metadata/Items/Currency/CurrencyModValues",
-              "to": "Metadata/Items/Currency/CurrencyRerollRemnant",
-              "rate": 8.0,
-              "volume_from": 148,
-              "volume_to": 1585
-            },
-            {
-              "from": "Metadata/Items/Currency/CurrencyRerollRemnant",
-              "to": "Metadata/Items/Currency/CurrencyRerollRare",
-              "rate": 1.35,
-              "volume_from": 640,
-              "volume_to": 864
-            },
-            {
-              "from": "Metadata/Items/Currency/CurrencyRerollRare",
-              "to": "Metadata/Items/Currency/Abyss/AbyssPinnacleKey",
-              "rate": 0.02127659574468085,
-              "volume_from": 5303,
-              "volume_to": 150
-            }
-          ]
-        }
-      ]
-    },
     {
       "change_id": 1794891600,
       "hour": "2026-11-17 05:00 UTC",
@@ -535,37 +447,16 @@
           ]
         }
       ]
+    },
+    {
+      "change_id": 1794909600,
+      "hour": "2026-11-17 10:00 UTC",
+      "fetched_at": "2026-11-17T11:00:39Z",
+      "league": "Forbidden Rites",
+      "market_count": 1127,
+      "volume_floor": 70,
+      "candidates": []
     }
   ],
-  "streaks": {
-    "Metadata/Items/Currency/CurrencyAddModToRare|Metadata/Items/Currency/CurrencyBreachShard|Metadata/Items/Currency/CurrencyRerollRare": {
-      "count": 1,
-      "last_change_id": 1794906000,
-      "last_profit_pct": 16.666666666666696,
-      "alerted": false,
-      "last_hops": [
-        {
-          "from": "Metadata/Items/Currency/CurrencyAddModToRare",
-          "to": "Metadata/Items/Currency/CurrencyBreachShard",
-          "rate": 0.25,
-          "volume_from": 267,
-          "volume_to": 79
-        },
-        {
-          "from": "Metadata/Items/Currency/CurrencyBreachShard",
-          "to": "Metadata/Items/Currency/CurrencyRerollRare",
-          "rate": 0.1111111111111111,
-          "volume_from": 5160,
-          "volume_to": 582
-        },
-        {
-          "from": "Metadata/Items/Currency/CurrencyRerollRare",
-          "to": "Metadata/Items/Currency/CurrencyAddModToRare",
-          "rate": 42.0,
-          "volume_from": 303,
-          "volume_to": 14269
-        }
-      ]
-    }
-  }
+  "streaks": {}
 }
